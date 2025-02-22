@@ -51,7 +51,12 @@ const reducer = (state: State, action: Action): State => {
     case 'SET_ERROR':
       return {...state, error: action.payload, loading: false};
     case 'ADD_FAVORITES':
-      return {...state, favorites: [...state.favorites, action.payload]};
+      return {
+        ...state,
+        favorites: state.favorites.some(item => item.id === action.payload.id)
+          ? state.favorites 
+          : [...state.favorites, action.payload], 
+      };
     case 'REMOVE_ADD_FAVORITES':
       return {
         ...state,

@@ -47,6 +47,7 @@ const FavoritesScreen = ({navigation}: any) => {
         <FlatList
           data={state.favorites}
           keyExtractor={item => item.id.toString()}
+          showsVerticalScrollIndicator={false}
           renderItem={({item}) => (
             <View style={styles.card}>
               <TouchableOpacity style={styles.cardContent}>
@@ -58,37 +59,46 @@ const FavoritesScreen = ({navigation}: any) => {
                   <ResponsiveText
                     title={item?.name}
                     fontStyle={styles.repoName}
+                    fontSize={16}
+
+
                   />
                   <ResponsiveText
                     title={item?.owner.login}
                     fontStyle={styles.repoOwner}
+                    fontSize={14}
                   />
                   <ResponsiveText
                     title={item.description || 'No description available.'}
                     fontStyle={styles.repoDescription}
+                    fontSize={14}
+
                   />
 
                   <View style={styles.statsRow}>
                     <View style={styles.stat}>
-                      <Icon name="star" size={scale(20)} color="gold" />
+                      <Icon name="star" size={scale(16)} color="gold" />
 
                       <ResponsiveText
                         title={item.stargazers_count}
                         fontStyle={styles.statText}
+                        fontSize={12}
                       />
                     </View>
                     <View style={styles.stat}>
-                      <Icon name="call-split" size={scale(20)} color="gray" />
+                      <Icon name="call-split" size={scale(16)} color="gray" />
                       <ResponsiveText
                         title={item.forks_count}
                         fontStyle={styles.statText}
+                        fontSize={12}
                       />
                     </View>
                     <View style={styles.stat}>
-                      <Icon name="code" size={scale(20)} color="#00BFFF" />
+                      <Icon name="code" size={scale(16)} color="#00BFFF" />
                       <ResponsiveText
                         title={item.language || 'Unknown'}
                         fontStyle={styles.statText}
+                        fontSize={12}
                       />
                       
                     </View>
@@ -148,17 +158,14 @@ const styles = StyleSheet.create({
   },
   repoName: {
     color: 'white',
-    fontSize: scale(16),
     fontWeight: 'bold',
   },
   repoOwner: {
-    color: colors.graytextColor,
-    fontSize: 14,
+    color: colors.gray,
     marginBottom: scale(5),
   },
   repoDescription: {
     color: '#bbb',
-    fontSize: 14,
   },
   statsRow: {
     flexDirection: 'row',
@@ -167,11 +174,10 @@ const styles = StyleSheet.create({
   stat: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: scale(15),
+    marginRight: scale(10),
   },
   statText: {
     color: '#bbb',
-    fontSize: 14,
     marginLeft: 5,
   },
   deleteButton: {

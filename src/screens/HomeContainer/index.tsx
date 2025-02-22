@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowOffset: {width: 0, height: 2},
     elevation: 5,
+    marginTop:scale(26)
   },
   searchInput: {
     color: colors.white,

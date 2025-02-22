@@ -18,15 +18,23 @@ import { SCREEN_NAMES } from '../../constants/ScreensNamesConstants/ScreenName';
 const DetailsScreen = ({route, navigation}) => {
   const {repo} = route.params;
 
-  const {dispatch} = useContext(AppContext);
+  const {state,dispatch} = useContext(AppContext);
   const toast = useToast();
 
   const [isFavorite, setIsFavorite] = useState(false);
   const scalAim = new Animated.Value(1);
 
   const handleAddToFavorites = () => {
-    dispatch({type: 'ADD_FAVORITES', payload: repo});
+    const isAlreadyFavorite = state.favorites.some(item => item.id === repo.id);
+  
+    if (isAlreadyFavorite) {
+      toast.show('Already in favorites!', { type: 'warning', duration: 2000 });
+      return;
+    }
+  
+    dispatch({ type: 'ADD_FAVORITES', payload: repo });
     setIsFavorite(true);
+  
     Animated.sequence([
       Animated.timing(scalAim, {
         toValue: 1.2,
@@ -39,11 +47,16 @@ const DetailsScreen = ({route, navigation}) => {
         useNativeDriver: true,
       }),
     ]).start();
-    toast.show('Added to favorites!', {type: 'success', duration: 2000,action:{
-      label:'View Favorites',
-      onPress:()=>navigation.navigate(SCREEN_NAMES.FAVORITES_SCREEN)
-    }});
-
+  
+    toast.show('Added to favorites!', {
+      type: 'success',
+      duration: 2000,
+      action: {
+        label: 'View Favorites',
+        onPress: () => navigation.navigate(SCREEN_NAMES.FAVORITES_SCREEN),
+      },
+    });
+  
     setTimeout(() => {
       navigation.navigate(SCREEN_NAMES.FAVORITES_SCREEN);
     }, 1000);
@@ -73,7 +86,7 @@ const DetailsScreen = ({route, navigation}) => {
       />
       <ResponsiveText
         title={repo?.name}
-        fontColor={colors.graytextColor}
+        fontColor={colors.gray}
         fontSize={16}
         fontStyle={{textAlign: 'center'}}
       />
