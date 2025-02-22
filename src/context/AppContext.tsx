@@ -1,5 +1,5 @@
-import React, { createContext, useReducer, ReactNode, Dispatch } from 'react';
-import { View, Text } from 'react-native';
+import React, {createContext, useReducer, ReactNode, Dispatch} from 'react';
+import {View, Text} from 'react-native';
 
 // Define types for state
 interface Repository {
@@ -19,11 +19,11 @@ interface State {
 
 // Define action types
 type Action =
-  | { type: 'SET_LOADING'; payload: boolean }
-  | { type: 'SET_REPOSITORIES'; payload: Repository[] }
-  | { type: 'SET_ERROR'; payload: string }
-  | { type: 'ADD_FAVORITES'; payload: Repository }
-  | { type: 'REMOVE_ADD_FAVORITES'; payload: number };
+  | {type: 'SET_LOADING'; payload: boolean}
+  | {type: 'SET_REPOSITORIES'; payload: Repository[]}
+  | {type: 'SET_ERROR'; payload: string}
+  | {type: 'ADD_FAVORITES'; payload: Repository}
+  | {type: 'REMOVE_ADD_FAVORITES'; payload: number};
 
 // Create context type
 interface AppContextType {
@@ -45,13 +45,13 @@ const initialState: State = {
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'SET_LOADING':
-      return { ...state, loading: action.payload };
+      return {...state, loading: action.payload};
     case 'SET_REPOSITORIES':
-      return { ...state, repositories: action.payload, loading: false };
+      return {...state, repositories: action.payload, loading: false};
     case 'SET_ERROR':
-      return { ...state, error: action.payload, loading: false };
+      return {...state, error: action.payload, loading: false};
     case 'ADD_FAVORITES':
-      return { ...state, favorites: [...state.favorites, action.payload] };
+      return {...state, favorites: [...state.favorites, action.payload]};
     case 'REMOVE_ADD_FAVORITES':
       return {
         ...state,
@@ -68,10 +68,10 @@ interface AppProviderProps {
 }
 
 // Context Provider Component
-export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
+export const AppProvider: React.FC<AppProviderProps> = ({children}) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={{state, dispatch}}>
       {children}
     </AppContext.Provider>
   );

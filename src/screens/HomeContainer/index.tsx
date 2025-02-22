@@ -26,7 +26,7 @@ import {SCREEN_NAMES} from '../../constants/ScreensNamesConstants/ScreenName';
 import {colors} from '../../styles/color';
 import {globalStyles} from '../../styles/globalStyles';
 
-const HomeScreen = ({navigation}:any) => {
+const HomeScreen = ({navigation}: any) => {
   const {state, dispatch} = useContext(AppContext);
   const [search, setSearch] = useState('');
   const debounceTimer = useRef(null);
@@ -41,18 +41,26 @@ const HomeScreen = ({navigation}:any) => {
   }, [search]);
 
   const fetchRepo = useCallback(async () => {
+    if (!search.trim()) return;
+  
+    console.log('Fetching started...');
     dispatch({type: 'SET_LOADING', payload: true});
+  
     try {
       const response = await axios.get(
-        `https://api.github.com/search/repositories?q=${search}`,
+        `https://api.github.com/search/repositories?q=${search}`
       );
+      console.log('Data fetched:', response?.data.items);
       dispatch({type: 'SET_REPOSITORIES', payload: response?.data.items || []});
     } catch (error) {
+      console.error('Fetch error:', error);
       dispatch({type: 'SET_ERROR', payload: 'Error fetching data'});
     } finally {
+      console.log('Fetching finished...');
       dispatch({type: 'SET_LOADING', payload: false});
     }
   }, [search, dispatch]);
+  
 
   return (
     <View style={styles.container}>
@@ -93,6 +101,7 @@ const HomeScreen = ({navigation}:any) => {
         ) : state.repositories?.length ? (
           <FlatList
             data={state.repositories}
+            showsVerticalScrollIndicator={false}
             keyExtractor={item =>
               item?.id?.toString() || Math.random().toString()
             }
